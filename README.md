@@ -39,6 +39,7 @@ This repository is used by me to store the code related to multiple wave suppres
 
 ##### 2. Focal transform(Consistent with the original data format)
 
+![focal](https://github.com/Lipeng-Lai/Mutiples_Suppression/blob/main/images/focal.png)
 
 ### EPSI(Estimation of primaries by sparse inversion)
 
