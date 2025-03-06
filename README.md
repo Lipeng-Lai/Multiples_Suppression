@@ -22,6 +22,9 @@ This repository is used by me to store the code related to multiple wave suppres
 ### Surface-related multiple elimination
 
 #### 1. Pre-Processing and no Pre-Processing
+
+![SRME](https://github.com/Lipeng-Lai/Mutiples_Suppression/blob/main/images/SRME.png)
+
 #### 2. Closed-loop SRME
 
 #### Adaptive subtraction
