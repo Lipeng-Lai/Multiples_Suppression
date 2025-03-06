@@ -6,6 +6,8 @@ This repository is used by me to store the code related to multiple wave suppres
 
 ### 1. Setting free or damp boundary Obtain records without multiple waves
 
+![free damp boundary](https://github.com/Lipeng-Lai/Mutiples_Suppression/blob/main/images/free_damp_boundary.png)
+
 ### 2. Data Modeling
 
 ### Radon Transform
