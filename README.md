@@ -5,7 +5,7 @@ This repository is used by me to store the code related to multiple wave suppres
 ## Installation
 (If you install a new version, there may be some parameter errors)
 ```python
-Just pip install pylops
+pip install pylops
 ```
 
 ## Seismic Forward
