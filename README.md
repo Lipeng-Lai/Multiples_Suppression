@@ -5,8 +5,11 @@ This repository is used by me to store the code related to multiple wave suppres
 ### Radon Transform
 
 1. Linear, Hyperbolic, Parabolic Radon Transform
-2. $\lambda-q$ Radon Transform ![image]([https://github.com/](https://github.com/Lipeng-Lai/Mutiples_Suppression/tree/main/images/radon.png))
-4. ...
+
+2. $\lambda-q$ Radon Transform
+ ![radon]([https://github.com/](https://github.com/Lipeng-Lai/Mutiples_Suppression/tree/main/images/radon.png)
+
+3. 
 
 
 ### Surface-related multiple elimination
