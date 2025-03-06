@@ -2,6 +2,12 @@
 
 This repository is used by me to store the code related to multiple wave suppression and adaptive subtraction for my undergraduate thesis. The information is sourced from the internet. If you have any questions, please feel free to contact me
 
+### Seismic Forward
+
+### 1. Setting free or damp boundary
+
+#### 2. Data Modeling
+
 ### Radon Transform
 
 #### 1. Linear, Hyperbolic, Parabolic Radon Transform
