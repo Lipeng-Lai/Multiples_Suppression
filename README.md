@@ -3,8 +3,10 @@
 This repository is used by me to store the code related to multiple wave suppression and adaptive subtraction for my undergraduate thesis. The information is sourced from the internet. If you have any questions, please feel free to contact me
 
 ## Installation
-
-1. Just pip install pylops(If you install a new version, there may be some parameter errors)
+(If you install a new version, there may be some parameter errors)
+```python
+Just pip install pylops
+```
 
 ## Seismic Forward
 
