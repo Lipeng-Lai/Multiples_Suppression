@@ -4,6 +4,8 @@ This repository is used by me to store the code related to multiple wave suppres
 
 ## Seismic Forward
 
+[Reference](https://github.com/DIG-Kaust/Adaptive-subtraction/blob/master/notebooks/Data_Modeling.ipynb)
+
 ### 1. Setting free or damp boundary Obtain records without multiple waves
 
 ![free damp boundary](https://github.com/Lipeng-Lai/Mutiples_Suppression/blob/main/images/free_damp_boundary.png)
