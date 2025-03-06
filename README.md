@@ -6,7 +6,9 @@ This repository is used by me to store the code related to multiple wave suppres
 
 1. Linear, Hyperbolic, Parabolic Radon Transform
 
-2. $\lambda-q$ Radon Transform
+2. $\lambda-f$ Radon Transform
+
+[Li, ZN., Li, ZC., Wang, P. et al. Multiple attenuation using λ-f domain high-resolution Radon transform. Appl. Geophysisc. 10, 433–441 (2013).](https://doi.org/10.1007/s11770-013-0405-1)
 
 ![radon](https://github.com/Lipeng-Lai/Mutiples_Suppression/blob/main/images/radon.png)
 
