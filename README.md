@@ -37,7 +37,7 @@ This repository is used by me to store the code related to multiple wave suppres
 
 #### Focal Transform
 
-(Berkhout A J, Verschuur D J. Focal transformation, an imaging concept for signal restoration and noise removal](https://library.seg.org/doi/abs/10.1190/1.2356996)
+(Berkhout A J, Verschuur D J. Focal transformation, an imaging concept for signal restoration and noise removal)[https://library.seg.org/doi/abs/10.1190/1.2356996]
 
 ##### 1. WCC(weighted correlation, Focus in the middle) 
 
