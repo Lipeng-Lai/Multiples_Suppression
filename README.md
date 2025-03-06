@@ -4,7 +4,7 @@ This repository is used by me to store the code related to multiple wave suppres
 
 ### Seismic Forward
 
-### 1. Setting free or damp boundary
+### 1. Setting free or damp boundary Obtain records without multiple waves
 
 ### 2. Data Modeling
 
