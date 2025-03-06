@@ -21,21 +21,20 @@ This repository is used by me to store the code related to multiple wave suppres
 
 ### Surface-related multiple elimination
 
-#### 1. Pre-Processing
-#### 2. No-Processing
-#### 3. Closed-loop SRME
+#### 1. Pre-Processing and no Pre-Processing
+#### 2. Closed-loop SRME
 
 #### Adaptive subtraction
 
-#### 1.  lsqr
+##### 1.  lsqr
 
-#### 2.  ADMM
+##### 2.  ADMM
 
-### Focal Transform
+#### Focal Transform
 
-#### 1. WCC(weighted correlation, Focus in the middle) 
+##### 1. WCC(weighted correlation, Focus in the middle) 
 
-#### 2. Focal transform(Consistent with the original data format)
+##### 2. Focal transform(Consistent with the original data format)
 
 
 ### EPSI(Estimation of primaries by sparse inversion)
