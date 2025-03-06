@@ -121,7 +121,11 @@ addpath(genpath('\\wsl.localhost\ubuntu-20.04\home\wwd\SLIM-release-apps\tools\s
 addpath(genpath('\\wsl.localhost\ubuntu-20.04\home\wwd\SLIM-release-apps\tools\algorithms\REPSI'));
 addpath(genpath('\\wsl.localhost\ubuntu-20.04\home\wwd\SLIM-release-apps\tools\utilities\SPOT-SLIM'));
 
-EPSI_SLIM_main('input_file','../data/your_data.mat','maxTotalIter',100,'padtime',11,'topmuteT',1,'q_estLength_posT',0.1,'q_estLength_negT',0.1,'useOblique',1,'relError',0.05,'window_startT',0.15,'window_endT',1,'savepreviewmat',1,'show_preview',1,'verbosity',0,'useSparsity',0,'parallel',0,'output_primary_file','Synthetic_primary.mat','output_primaryIR_file','Synthetic_primaryIR.mat','output_wavelet_file','Synthetic_wavelet.mat','preview_file','Preview/Synthetic_preview.mat','sol_file','Results/Synthetic_result.mat');
+EPSI_SLIM_main('input_file','../data/your_data.mat','maxTotalIter',100,'padtime',11,'topmuteT',
+1,'q_estLength_posT',0.1,'q_estLength_negT',0.1,'useOblique',1,'relError',0.05,'window_startT',
+0.15,'window_endT',1,'savepreviewmat',1,'show_preview',1,'verbosity',0,'useSparsity',0,'parallel',
+0,'output_primary_file','Synthetic_primary.mat','output_primaryIR_file','Synthetic_primaryIR.mat',
+'output_wavelet_file','Synthetic_wavelet.mat','preview_file','Preview/Synthetic_preview.mat','sol_file','Results/Synthetic_result.mat');
 
 ```
 
