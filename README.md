@@ -21,7 +21,7 @@ This repository is used by me to store the code related to multiple wave suppres
 
 ### Surface-related multiple elimination
 
-(Verschuur D J, Berkhout A J, Wapenaar C P A. Adaptive surface-related multiple eliminationJ. Geophysics, 1992, 57: 1166-1177.)[https://library.seg.org/doi/abs/10.1190/1.1443330]
+[Verschuur D J, Berkhout A J, Wapenaar C P A. Adaptive surface-related multiple eliminationJ. Geophysics, 1992, 57: 1166-1177.](https://library.seg.org/doi/abs/10.1190/1.1443330)
 
 #### 1. Pre-Processing and no Pre-Processing
 
@@ -37,7 +37,7 @@ This repository is used by me to store the code related to multiple wave suppres
 
 #### Focal Transform
 
-(Berkhout A J, Verschuur D J. Focal transformation, an imaging concept for signal restoration and noise removal)[https://library.seg.org/doi/abs/10.1190/1.2356996]
+[Berkhout A J, Verschuur D J. Focal transformation, an imaging concept for signal restoration and noise removal](https://library.seg.org/doi/abs/10.1190/1.2356996)
 
 ##### 1. WCC(weighted correlation, Focus in the middle) 
 
