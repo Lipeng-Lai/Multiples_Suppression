@@ -68,8 +68,9 @@ pip install pylops
 
 ### 1. Original
 
-### 2. Robust
-
+### 2. Robust 
+[Robust estimation of primaries by sparse inversion via one-norm minimization](https://library.seg.org/doi/10.1190/geo2012-0097.1)
+[code](https://slim.gatech.edu/SoftwareDemos/applications/WavefieldSeparation/RobustEPSI/example.html)
 
 ## EMD
 
