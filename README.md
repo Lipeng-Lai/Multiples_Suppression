@@ -6,7 +6,7 @@ This repository is used by me to store the code related to multiple wave suppres
 
 ### 1. Setting free or damp boundary
 
-#### 2. Data Modeling
+### 2. Data Modeling
 
 ### Radon Transform
 
