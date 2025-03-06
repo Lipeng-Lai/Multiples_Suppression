@@ -31,6 +31,7 @@ This repository is used by me to store the code related to multiple wave suppres
 
 #### Adaptive subtraction
 
+[Adaptive subtraction](https://github.com/DIG-Kaust/Adaptive-subtraction/blob/master/notebooks/Adaptive_Subtraction.ipynb)
 ##### 1.  LSQR
 
 ##### 2.  ADMM
