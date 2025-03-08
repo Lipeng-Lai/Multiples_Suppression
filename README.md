@@ -76,42 +76,41 @@ pip install pylops
 The installation is a bit complicated. Here, I will write about the method of using Matlab on Windows and calling it with WSL
 
 ```
-git clone git@github.com:SINBADconsortium/SLIM-release-apps.git
+git clone --depth=1 https://github.com/SINBADconsortium/SLIM-release-apps.git
 cd SLIM-release-apps
 cp environment.sh.template environment.sh
-. environment.sh
+vim enviroment.sh
+
+# edit enviroment after, if you just need spgl1, skip SLIM-release-comp
+export SLIM_COMP='/home/wwd/SLIM-release-comp'
+export SLIM_APPS='/home/wwd/SLIM-release-apps'
+
+# esc vim, and edit ~/.bashrc
+source /home/wwd/SLIM-release-apps/environment.sh
+. /home/wwd/SLIM-release-apps/environment.sh
+source ~/.bashrc
 ```
 
 ```
-git clone git@github.com:SINBADconsortium/SLIM-release-comp.git
-cd SLIM-release-comp
-cp environment.sh.template environment.sh
-. environment.sh
-```
-
-```
+# if your matlab in windows, and work in Linux
 sudo ln -s "/mnt/d/Program Files/MATLAB/R2022a/bin/matlab.exe" /usr/local/bin/matlab
 sudo ln -s "/mnt/d/Program Files/MATLAB/R2022a/bin/win64/mex.exe" /usr/local/bin/mex
 
 # test, if print, link sucess!
 which matlab
 which mex
+```
 
+```
 # test SLIM
 # in SLIM-release-apps
 test_env4slim.sh
 
-# in SLIM-release-comp
-test_env4slim.sh
-
-# in SLIM-release-apps
+# in SLIM-release-apps, if it excute error, don't mind, just skip(if you fix the error, such as 'PI not define, and define PI 3.14....', and you run following code, will occur x = (x, nt, nr, ns) error, because x = (0, 0),
+# I guess SLIM-spgl1 is  damage) 
 install_MEX
-install_test4matlab
 
-# in SLIM-release-comp(check anything if you have,such as gcc, then skip)
-install_ALL
-
-# start running code, you can replace your data, (and skip scons in data/) to fetch data
+# start running code, you can replace your data(.mat, .bin, .su), (and skip scons in data/) to fetch data
 cd SLIM-release-apps/applications/WavefieldSeparation/RobustEPSI/Synthetic
 scons
 # generate 3 matlab files, and running  Synthetic.m, if path error, you can add path in Sythetic.m
