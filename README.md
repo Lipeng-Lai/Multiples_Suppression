@@ -106,7 +106,9 @@ which mex
 # in SLIM-release-apps
 test_env4slim.sh
 
-# in SLIM-release-apps, if it excute error, don't mind, just skip(if you fix the error, such as 'PI not define, and define PI 3.14....', and you run following code, will occur x = (x, nt, nr, ns) error, because x = (0, 0),
+# in SLIM-release-apps, if it excute error, don't mind, just skip(if you fix the error,
+# such as 'PI not define, and define PI 3.14....', and you run following code, will occur
+# x = (x, nt, nr, ns) error, because x = (0, 0),
 # I guess SLIM-spgl1 is  damage) 
 install_MEX
 
@@ -124,7 +126,8 @@ EPSI_SLIM_main('input_file','../data/your_data.mat','maxTotalIter',100,'padtime'
 1,'q_estLength_posT',0.1,'q_estLength_negT',0.1,'useOblique',1,'relError',0.05,'window_startT',
 0.15,'window_endT',1,'savepreviewmat',1,'show_preview',1,'verbosity',0,'useSparsity',0,'parallel',
 0,'output_primary_file','Synthetic_primary.mat','output_primaryIR_file','Synthetic_primaryIR.mat',
-'output_wavelet_file','Synthetic_wavelet.mat','preview_file','Preview/Synthetic_preview.mat','sol_file','Results/Synthetic_result.mat');
+'output_wavelet_file','Synthetic_wavelet.mat','preview_file','Preview/Synthetic_preview.mat',
+'sol_file','Results/Synthetic_result.mat');
 
 ```
 
