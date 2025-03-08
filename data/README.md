@@ -3,7 +3,7 @@
 ## 1. Sigsbee data shot records
 [Madagascar](https://ahay.org/RSF/book/data/sigsbee/paper_html/)
 
-![Sigsbee](https://github.com/Lipeng-Lai/Multiples_Suppression/blob/main/images/Sigsbee2B_shot.png)
+![Sigsbee](https://github.com/Lipeng-Lai/Multiples_Suppression/blob/main/images/sigsbee2B_shot.png)
 
 ## 2. Pluto data shot records
 [Madagascar](https://ahay.org/RSF/book/data/pluto/paper_html/)
