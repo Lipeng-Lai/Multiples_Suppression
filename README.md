@@ -109,7 +109,7 @@ test_env4slim.sh
 # in SLIM-release-apps, if it excute error, don't mind, just skip(if you fix the error,
 # such as 'PI not define, and define PI 3.14....', and you run following code, will occur
 # x = (x, nt, nr, ns) error, because x = (0, 0),
-# I guess SLIM-spgl1 is  damage) 
+# I guess SLIM-spgl1 is  broken) 
 install_MEX
 
 # start running code, you can replace your data(.mat, .bin, .su), (and skip scons in data/) to fetch data
