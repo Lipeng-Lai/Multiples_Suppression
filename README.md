@@ -133,6 +133,8 @@ EPSI_SLIM_main('input_file','../data/your_data.mat','maxTotalIter',100,'padtime'
 
 ## PEF(prediction-error filter and prediction decon)
 
+![old_pef](https://github.com/Lipeng-Lai/Mutiples_Suppression/blob/main/images/old_pef.png)
+
 ## EMD
 
 
