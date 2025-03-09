@@ -1,0 +1,20 @@
+python	/home/wwd/RSFSRC/book/data/sigsbee/data:	wwd@lihua	Fri Feb 21 00:23:15 2025
+	in="/var/tmp/tmpaz5sp88u"
+	n1=627
+	n2=101
+	n3=101
+	data_format="native_float"
+4.2-git	sfput	data/sigsbee/data:	wwd@lihua	Sun Mar  9 15:13:00 2025
+
+	label3=Shot
+	d1=0.004
+	d2=0.012
+	d3=0.012
+	o1=0
+	data_format="native_float"
+	o2=0
+	o3=0
+	in="/tmp/data/sigsbee/data/shot.rsf@"
+	unit=km
+	label1=Time
+	label2=Offset

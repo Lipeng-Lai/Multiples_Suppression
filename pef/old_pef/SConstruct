@@ -1,0 +1,62 @@
+from rsf.proj import *
+
+#-----------------------------------------------------------
+# Data Preparation: Extract single CMP gather from shot data
+#-----------------------------------------------------------
+Flow('cmp', 'shot', 'window n3=1 f3=1')  # Extract 1 CMP gather from 3D shot data
+Plot('cmp','grey title="Input CMP"')     # Visualize raw CMP gather
+
+#-----------------------------------------------------------
+# Velocity Analysis: Create semblance scan for velocity picking
+#-----------------------------------------------------------
+Flow('vscan','cmp','vscan semblance=y v0=1.5 dv=0.01 nv=200 half=n')  # Generate velocity scan with 2000 velocity values from 1.5km/s
+Flow('pick','vscan','scale axis=2 | pick rect1=10')  # Auto-pick velocity function with 10-sample smoothing
+
+#-----------------------------------------------------------
+# NMO Correction: Apply normal moveout using picked velocities
+#-----------------------------------------------------------
+Flow('mo','cmp pick','nmo velocity=${SOURCES[1]} half=n')  # Apply NMO correction using picked velocity model
+Plot('mo','grey title="NMO"')  # Display NMO-corrected data
+
+#-----------------------------------------------------------
+# Randomization: Break periodicity of multiples
+#-----------------------------------------------------------
+# Generate random offsets for trace shuffling
+Flow('off','mo','window n1=1 | noise rep=y seed=2015')  # Create random number sequence with fixed seed
+Flow('rand','mo off','headersort head=${SOURCES[1]}')   # Shuffle traces using random offsets
+
+#-----------------------------------------------------------
+# 3D Data Expansion: Create pseudo-3D volume for spatial filtering
+#-----------------------------------------------------------
+Flow('mo3','mo','spray axis=3 n=101 o=0 d=1 label=Sample')  # Expand to 3D with 1001 fake depth samples
+
+#-----------------------------------------------------------
+# 3D Randomization & Predictive Error Filtering (PEF)
+#-----------------------------------------------------------
+# Generate 3D random offsets
+Flow('off3','mo3','window n1=1 | noise rep=y seed=2015')  # 3D randomization seed
+Flow('rand3','mo3 off3','headersort head=${SOURCES[1]}')   # Shuffle 3D traces
+
+# Core PEF Step: Spatial smoothing to estimate predictable components (multiples)
+Flow('tx3','rand3','smooth rect2=16 rect3=16')  # Apply 20x20 smoothing in offset(2) and pseudo-depth(3) dimensions
+
+#-----------------------------------------------------------
+# Data Reconstruction & Multiple Removal
+#-----------------------------------------------------------
+# Recover original trace order
+Flow('inv3','off3','put d1=1 o1=0 | math output="x1+101*x2" | spray axis=1 n=1 | headersort head=$SOURCE')
+Flow('back','tx3 inv3','headersort head=${SOURCES[1]} | stack axis=3')  # Stack along pseudo-depth dimension
+
+# Calculate residual (removed multiples)
+Flow('dif','mo back','add scale=1,-1 ${SOURCES[1]}')  # Subtract PEF result from original: dif = mo - back
+
+#-----------------------------------------------------------
+# Result Visualization
+#-----------------------------------------------------------
+Plot('back','grey title="NMO data PEF"')         # Show multiples-removed data
+Plot('dif','grey title="NMO data PEF minus NMO data"')  # Display removed multiples
+
+# Generate final comparison plot
+Result('mo-nmo-tx','cmp mo back dif','SideBySideAniso')  # Side-by-side comparison of input/NMO/PEF/residual
+
+End()
