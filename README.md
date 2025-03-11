@@ -133,7 +133,11 @@ EPSI_SLIM_main('input_file','../data/your_data.mat','maxTotalIter',100,'padtime'
 
 ## PEF(prediction-error filter and prediction decon)
 
+(Multiple suppression using prediction-error filter)[https://ahay.org/RSF/book/sep/pefmult/paper_html/]
+
 ![old_pef](https://github.com/Lipeng-Lai/Mutiples_Suppression/blob/main/images/old_pef.png)
+
+(Multichannel adaptive deconvolution based on streaming prediction-error filter)[https://ahay.org/RSF/book/jlu/spefdecon/paper_html/paper.html]
 
 ![Sigbee_zero_offset](https://github.com/Lipeng-Lai/Mutiples_Suppression/blob/main/images/sigbee_zero_offset.png)
 
