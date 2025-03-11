@@ -1,0 +1,117 @@
+from rsf.proj import *
+
+##  -------------------------- real data -----------------------------
+## real data
+Flow('data', 'zodata','put n3=1 d3=1 o3=0')
+Result('data',
+       '''                  
+       grey label2="Zero Offset" label1="Time"
+       title="" labelfat=3 font=2 screenratio=0.8 color=g
+       ''')
+
+## data with padding
+Flow('pad_data','data','cat $SOURCE axis=1 o=-12 d=0.008')
+
+##  ----------------------- traditional PEF ------------------------
+Flow('tpef','data',
+     '''
+     pef minlag=0.008 maxlag=0.012 pnoise=0.01 mincorr=0 maxcorr=2.
+     ''')
+Result('tpef',
+       '''                  
+       grey label2="PEF" label1="Time"
+       title="" labelfat=3 font=2 screenratio=0.8 color=g 
+       ''')
+
+##  ------------------------ adaptive PEF -------------------------
+Flow('shift2','data','oshift1 nf=2 ns=6 | transp plane=23')
+Flow('pef2 pre2','shift2 data',
+    '''
+    lpf match=${SOURCES[1]} pred=${TARGETS[1]} 
+    rect1=50 rect2=10 niter=1500 verb=n
+    ''')
+Flow('apef','pre2 data','add scale=-1,1 ${SOURCES[1]}')
+Result('apef',
+      '''     
+      grey label2="CDP" label1="Time"
+      title="" labelfat=3 font=2 screenratio=0.8 color=g
+      ''')
+
+##  --------- streaming PEF with varying prediction step --------------
+## local frequency
+Flow('zlf','data',
+     '''
+     iphase rect1=15 rect2=350 order=10 hertz=y 
+     complex=n niter=100 verb=n | window min1=0.
+     ''')
+Result('zlf', 'grey title="Instantaneous Frequency (Hz)"')
+
+## time-varying prediction step
+Flow('l0',None,'math n1=1500 n2=500 d1=0.008 o1=-12 d2=0.04572 o2=3.32994 output="1" ')
+# Flow('zvlag0','zlf','math output="(0.032/(input*0.008))" ')
+Flow('zvlag0','zlf','math output="(0.05/((input+0.01)*0.008))" ')
+Flow('zvlag','l0 zvlag0',
+     '''
+     cat axis=1 ${SOURCES[1:2]} o=-12 d=0.008 |
+     math output="input-1" | dd type=int
+     ''')
+
+## SPEF with time-varying prediction step
+Flow('vlag-spef','pad_data zvlag',
+     '''
+     spefvstep lag=${SOURCES[1]} 
+     lambda1=50000 lambda2=10000 na=9 verb=n |
+     window min1=0. | smooth rect1=3
+     ''')
+Result('vlag-spef',
+       '''                  
+       grey label2="SPEF" label1="Time"
+       wanttitle=n labelfat=3 font=2 screenratio=0.8 color=g
+       ''')
+
+##  ---------------------- frequency spectra -----------------------
+# field data
+Flow('zspec0','data',
+     '''
+     spectra all=y | scale axis=1
+     ''')
+Result('zspec0',
+       '''
+       graph title="" label2=Amp unit2= label1=Frequency unit1=Hz
+       font=2 labelfat=3
+       ''')
+
+## tpef
+Flow('zspec1','tpef',
+     '''
+     spectra all=y | scale axis=1
+     ''')
+Result('zspec1',
+       '''
+       graph title="" label2=Amp unit2= label1=Frequency unit1=Hz
+       font=2 labelfat=3
+       ''')
+
+## apef
+Flow('zspec2', 'apef',
+     '''
+     spectra all=y | scale axis=1
+     ''')
+Result('zspec2',
+       '''
+       graph title="" label2=Amp unit2= label1=Frequency unit1=Hz
+       font=2 labelfat=3
+       ''')
+
+## spef
+Flow('zspec3', 'vlag-spef',
+     '''
+     spectra all=y | scale axis=1
+     ''')
+Result('zspec3',
+       '''
+       graph title="" label2=Amp unit2= label1=Frequency unit1=Hz
+       font=2 labelfat=3
+       ''')
+
+End()
