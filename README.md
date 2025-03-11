@@ -137,6 +137,10 @@ EPSI_SLIM_main('input_file','../data/your_data.mat','maxTotalIter',100,'padtime'
 
 ![Sigbee_zero_offset](https://github.com/Lipeng-Lai/Mutiples_Suppression/blob/main/images/sigbee_zero_offset.png)
 
+![tpef](https://github.com/Lipeng-Lai/Mutiples_Suppression/blob/main/images/tpef.png)
+
+![vlag-spef](https://github.com/Lipeng-Lai/Mutiples_Suppression/blob/main/images/vlag-spef.png)
+
 ## EMD
 
 
