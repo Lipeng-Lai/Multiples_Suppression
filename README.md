@@ -145,11 +145,17 @@ EPSI_SLIM_main('input_file','../data/your_data.mat','maxTotalIter',100,'padtime'
 
 ![vlag-spef](https://github.com/Lipeng-Lai/Mutiples_Suppression/blob/main/images/vlag-spef.png)
 
-## EMD
+## EMD(Empirical mode decomposition)
 [Multiple reflections noise attenuation using adaptive randomized-order empirical mode decomposition](https://ahay.org/RSF/book/tccs/demulemd/paper_html/paper.html)
 [Matlab code](https://github.com/chenyk1990/reproducible_research/tree/795d2e2217f21261a0372abc5f503a1d6b601fc6/demulemd)
 
 ![emd](https://github.com/Lipeng-Lai/Mutiples_Suppression/blob/main/images/emd.png)
 
+
+## LPF(Local prediction filter)
+
+[Adaptive multiple subtraction using regularized nonstationary regression](https://ahay.org/RSF/book/tccs/lpf/paper_html/paper.html)
+
+![lpf](https://github.com/Lipeng-Lai/Mutiples_Suppression/blob/main/images/lpf.png)
 
 ## Seislet
