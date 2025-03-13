@@ -146,6 +146,8 @@ EPSI_SLIM_main('input_file','../data/your_data.mat','maxTotalIter',100,'padtime'
 ![vlag-spef](https://github.com/Lipeng-Lai/Mutiples_Suppression/blob/main/images/vlag-spef.png)
 
 ## EMD
+[Multiple reflections noise attenuation using adaptive randomized-order empirical mode decomposition](https://ahay.org/RSF/book/tccs/demulemd/paper_html/paper.html)
+[Matlab code](https://github.com/chenyk1990/reproducible_research/tree/795d2e2217f21261a0372abc5f503a1d6b601fc6/demulemd)
 
 
 ## Seislet
