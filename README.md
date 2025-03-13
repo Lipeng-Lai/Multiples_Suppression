@@ -7,6 +7,11 @@ This repository is used by me to store the code related to multiple wave suppres
 ```python
 pip install pylops
 ```
+```
+install Madagascar
+https://ahay.org/wiki/Installation
+```
+
 
 ## Seismic Forward
 
@@ -165,3 +170,8 @@ EPSI_SLIM_main('input_file','../data/your_data.mat','maxTotalIter',100,'padtime'
 ![seislet](https://github.com/Lipeng-Lai/Mutiples_Suppression/blob/main/images/seislet.png)
 
 ## Curvelet
+
+
+## DeepLearning
+
+
