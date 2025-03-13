@@ -1,0 +1,158 @@
+from rsf.proj import *     
+from rsf.prog import RSFROOT 
+
+# 定义绘图函数 Grey，设置通用绘图参数
+def Grey(data,other):
+        Result(data,'grey screenratio=0.9 title= clip=0.9 ')
+
+
+Flow('prim',None,
+    'spike n1=100 n2=50 o1=0.0 d1=0.004 o2=0.0 d2=0.02 k1=12')  
+    # n1=100: 时间采样点数，d1=0.004秒采样间隔
+    # n2=50: 空间道数，d2=0.02 km道间距
+    # k1=12: 脉冲位置在第12个时间采样点
+
+# 生成双曲线动校正速度模型（模拟正常时差校正后的形状）
+Flow('hyper','prim',
+    'window n1=1 | math output="0.052+sqrt(0.048^2+x1*x1/16)" ')  
+    # window n1=1: 沿时间轴取第一个样点（构造空间轴）
+    # math表达式定义双曲线速度函数：t(x) = 0.052 + sqrt(0.048^2 + x²/16)
+
+# 生成多次波信号（通过数据拉伸操作模拟多次反射）
+Flow('mult','prim hyper',
+    'datstretch inv=y datum=${SOURCES[1]}')  
+    # inv=y: 反向拉伸（模拟多次波较一次波的时差）
+    # datum: 输入速度模型（hyper）
+
+# 合成CMP道集（叠加一次波和多次波）
+Flow('cmp','prim mult',
+    'add ${SOURCES[1]}')  # 将prim和mult两个输入相加
+Plot('cmp','grey labelsz=12 titlesz=12 title="CMP (after NMO)" ')  # 绘制CMP道集
+
+# 生成随机道序号用于重排
+Flow('off','cmp',
+    'window n1=1 | noise rep=y seed=2015')  
+    # window n1=1: 沿时间轴取第一个样点（获取空间轴信息）
+    # noise rep=y: 生成重复性随机数（seed=2015固定随机种子）
+
+# 对CMP道集进行随机重排（破坏多次波的空间相干性）
+Flow('rand','cmp off',
+    'headersort head=${SOURCES[1]}')  # 根据off文件中的头信息对道进行排序
+Plot('rand','grey labelsz=12 titlesz=12 title="CMP (after randomization)" ')
+
+# 并排显示原始CMP和随机化后的CMP
+Result('syn-in','cmp rand',
+       'SideBySideAniso')  # SideBySideAniso: 各向异性并排显示
+
+# 生成3D数据体用于可视化（沿第三个轴扩展）
+Flow('cmp3','cmp',
+    'spray axis=3 n=50 o=0 d=1 label=Sample')  # axis=3: 扩展第三维，n=50个样本
+Flow('off3','cmp3',
+    'window n1=1 | noise rep=y seed=2015')  # 生成三维随机偏移量
+Flow('rand3','cmp3 off3',
+    'headersort head=${SOURCES[1]}')  # 三维随机重排
+ # 转换为字节格式节省内存
+ # 3D可视化参数
+Result('syn-cube','rand3',
+       '''
+       byte | 
+       grey3 frame1=50 frame2=30 frame3=30 flat=n title="3-D cube"  
+       ''')
+
+# 添加随机噪声到CMP道集
+Flow('ncmp','cmp',
+    'noise seed=2015 var=0.001')  # var=0.001: 噪声方差，seed=2015固定随机种子
+Flow('nrand','ncmp off',
+    'headersort head=${SOURCES[1]}')  # 对含噪数据进行随机重排
+
+# 使用预测误差滤波(PEF)进行多次波衰减
+Flow('pef lag','nrand',
+    'lopef a=3,7 w=10,50 lag=${TARGETS[1]}')  # a=3,7: 自回归滤波器维度，w=10,50: 窗口大小
+Flow('tx','nrand pef',
+    'decon filt=${SOURCES[1]} predictive=y')  # predictive=y: 预测反卷积
+
+# 逆排序恢复原始道顺序
+Flow('inv','off',
+    'math output=x1 | spray axis=1 n=1 | headersort head=$SOURCE')  
+    # 生成逆排序索引：x1表示原始道序号
+Flow('back','tx inv',
+    'headersort head=${SOURCES[1]}')  # 应用逆排序
+
+# 计算PEF方法去除的多次波（差异）
+Flow('dif','ncmp back',
+    'add scale=1,-1 ${SOURCES[1]}')  # scale=1,-1: 原始含噪数据减去去噪结果
+
+# Convert RSF  to SEGY
+Flow('offset', 'nrand', 'window n1=1 | math output="1000*x1" | dd type=int')
+Flow('tdata','nrand offset','segyheader offset=${SOURCES[1]}')
+Flow('nrand.sgy','nrand tdata','segywrite tfile=${SOURCES[1]}')
+
+
+########################################################################
+# MATLAB EMD处理部分
+########################################################################
+# matlab = WhereIs('matlab')  # 定位Matlab可执行文件
+# matROOT = '../matfun/'       # Matlab函数路径
+# matfun = 'FXEMDM'            # EMD处理函数名称
+# matlabpath = os.environ.get('MATLABPATH',os.path.join(RSFROOT,'lib'))  # 设置Matlab路径
+
+# # 检查Matlab是否存在
+# if not matlab:
+#     sys.stderr.write('\nCannot find Matlab.\n')
+#     sys.exit(1)
+
+# # EMD处理参数
+# n1=100   # 时间样点数
+# n2=50    # 空间道数
+# dt=0.004 # 时间采样间隔（秒）
+# lf=5     # 低截频率（Hz）
+# hf=120   # 高截频率（Hz）
+# N=3      # EMD分解阶数
+# verb=1   # 是否输出处理详情（1:是，0:否）
+
+# # 调用Matlab进行EMD处理
+# Flow('nrand-emd-t',[os.path.join(matROOT,matfun+'.m'),'nrand'],
+#      '''MATLABPATH=%(matlabpath)s %(matlab)s 
+#      -nosplash -nojvm -r "addpath %(matROOT)s;%(matfun)s('${SOURCES[1]}','${TARGETS[0]}',%(n1)d,%(n2)d,%(dt)g,%(lf)g,%(hf)g,%(N)d,%(verb)d);quit"
+#      '''%vars(),stdin=0,stdout=-1)
+
+# Convert SEGY back to RSF
+Flow('nrand-emd-t','nrand_emd_t.sgy','segyread')
+
+# 格式处理：设置头信息
+Flow('nrand-emd','nrand-emd-t',
+    'put d2=0.02 d1=0.004 o2=0 o1=0 label2=Distance unit2=km label1=Time unit1=s')
+Flow('nrand-emd-back','nrand-emd inv',
+    'headersort head=${SOURCES[1]}')  # 逆排序恢复道顺序
+
+# 计算EMD方法去除的多次波（差异）
+Flow('emd-dif','ncmp nrand-emd-back',
+    'add scale=1,-1 ${SOURCES[1]}')  # 原始含噪数据减去去噪结果
+
+# 绘制各阶段结果
+Grey('ncmp','')     # 含噪CMP道集
+Grey('rand','')     # 随机化后的道集
+Grey('back','')     # PEF去噪结果
+Grey('dif','')      # PEF去除的多次波
+Grey('nrand-emd-back','')  # EMD去噪结果
+Grey('emd-dif','')         # EMD去除的多次波
+
+# 信噪比计算流程
+Flow('true','cmp',
+    'cut min1=0.1')  # 截取真实信号（去除前0.1秒的直达波）
+Flow('dif0','true ncmp',
+    'add scale=1,-1 ${SOURCES[1]}')  # 计算含噪数据与真实信号的差异
+Flow('dif1','true back',
+    'add scale=1,-1 ${SOURCES[1]}')  # PEF去噪结果差异
+Flow('dif2','true nrand-emd-back',
+    'add scale=1,-1 ${SOURCES[1]}')  # EMD去噪结果差异
+
+# 计算SNR
+Flow('snr0','true dif0',
+    'snr2 noise=${SOURCES[1]}')  # 原始含噪数据SNR
+Flow('snr1','true dif1',
+    'snr2 noise=${SOURCES[1]}')  # PEF方法SNR
+Flow('snr2','true dif2',
+    'snr2 noise=${SOURCES[1]}')  # EMD方法SNR
+
+End()  # 结束项目定义
