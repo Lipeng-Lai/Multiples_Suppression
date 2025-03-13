@@ -1,0 +1,67 @@
+4.2-git	sfsegyread	data/sigsbee/data2A:	wwd@lihua	Thu Mar 13 15:52:56 2025
+
+	d2=1
+	o1=0
+	n2=152684
+	o2=0
+	label1="Time"
+	data_format="native_float"
+	head="tzdata.rsf"
+	label2="Trace"
+	esize=4
+	in="/tmp/data/sigsbee/data2A/zdata.rsf@"
+	unit1="s"
+	d1=0.008
+	n1=1500
+4.2-git	sfintbin	data/sigsbee/data2A:	wwd@lihua	Thu Mar 13 15:53:02 2025
+
+	d2=1
+	n2=348
+	d3=1
+	o2=0
+	n3=500
+	data_format="native_float"
+	o3=73
+	esize=4
+	in="/tmp/data/sigsbee/data2A/sraw.rsf@"
+4.2-git	sfput	data/sigsbee/data2A:	wwd@lihua	Thu Mar 13 15:53:07 2025
+
+	data_format="native_float"
+	label1=Time
+	label2=Offset
+	label3=Shot-coord
+	d2=.02286
+	d3=.04572
+	o3=3.330
+	unit1=s
+	unit2=km
+	in="stdout"
+	unit3=km
+	in="stdin"
+
+4.2-git	sfmutter	data/sigsbee/data2A:	wwd@lihua	Thu Mar 13 15:53:07 2025
+
+	data_format="native_float"
+	esize=4
+	in="/tmp/data/sigsbee/data2A/shot.rsf@"
+4.2-git	sfwindow	data/sigsbee/data2A:	wwd@lihua	Thu Mar 13 15:53:12 2025
+
+	d2=0.02286
+	n2=348
+	o1=0
+	d3=0.04572
+	o2=0
+	label1="Time"
+	n3=1
+	data_format="native_float"
+	o3=6.5304
+	label2="Offset"
+	label3="Shot-coord"
+	f3=70
+	esize=4
+	in="/tmp/data/sigsbee/data2A/shot70.rsf@"
+	unit1="s"
+	unit2="km"
+	unit3="km"
+	d1=0.008
+	n1=1500
