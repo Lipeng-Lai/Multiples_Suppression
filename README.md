@@ -159,3 +159,9 @@ EPSI_SLIM_main('input_file','../data/your_data.mat','maxTotalIter',100,'padtime'
 ![lpf](https://github.com/Lipeng-Lai/Mutiples_Suppression/blob/main/images/lpf.png)
 
 ## Seislet
+
+[Seislet-based morphological component analysis using scale-dependent exponential shrinkage](https://ahay.org/RSF/book/xjtu/mcaseislet/paper_html/paper.html)
+
+![seislet](https://github.com/Lipeng-Lai/Mutiples_Suppression/blob/main/images/seislet.png)
+
+## Curvelet
