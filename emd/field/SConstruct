@@ -1,0 +1,148 @@
+# 导入Madagascar项目库和路径配置
+from rsf.proj import *
+from rsf.prog import RSFROOT
+
+# 定义灰度图生成函数
+def Grey(data,other):
+    # 使用Result生成灰度图，设置参数：屏幕比例1.3，标题，裁剪值0.29
+    Result(data,'grey screenratio=1.3 title=%s '%other)
+
+# 获取原始地震数据文件
+# Fetch('cmp807_raw.HH','rad')
+
+
+# 数据预处理流程：格式化数据 -> 平方增益 -> 静校正 -> 缩放 -> 时窗截取
+# Flow('cmp0','cmp807_raw.HH',
+#      'dd form=native | pow pow1=2 | mutter v0=1.3 tp=0.2 half=n | scale axis=2 | window max2=2.5')
+
+Flow('cmp0', 'shot70', 'mutter v0=2.5 half=y')
+Grey('cmp0','') # 生成预处理后的灰度图
+
+# 生成相似度速度谱：速度范围1.2-3km/s，间隔0.01，共180个速度点
+Flow('vscan','cmp0','vscan semblance=y v0=1.0 dv=0.01 nv=140 half=n')
+
+# 速度曲线拾取：应用横向平滑窗口（10个采样点）
+Flow('pick','vscan','mutter inner=y half=n x0=1.2 v0=0.35 | scale axis=2 | pick rect1=10')
+
+# 动校正（NMO）：使用拾取的速度曲线对道集进行校正
+Flow('nmo','cmp0 pick','nmo velocity=${SOURCES[1]} half=n')
+Grey('nmo','') # 生成NMO后的灰度图
+
+# 数据窗口截取
+Flow('mo','nmo','window')
+Plot('mo','grey title="Input CMP" clip=0.3') # 绘制输入CMP道集
+
+Flow('cmp','mo','cp') # 数据拷贝
+
+# 随机化处理流程 --------------------------------------------------
+# 生成噪声数据并排序
+Flow('off','mo','window n1=1 | noise rep=y seed=201516')
+Flow('rand','mo off','headersort head=${SOURCES[1]}')
+
+# 三维数据扩展：沿第三轴扩展50个样本
+Flow('mo3','mo','spray axis=3 n=50 o=0 d=1 label=Sample')
+Flow('off3','mo3','window n1=1 | noise rep=y seed=2015')
+Flow('rand3','mo3 off3','headersort head=${SOURCES[1]}')
+Flow('tx3','rand3','smooth rect2=4 rect3=4') # 应用4x4平滑滤波器
+
+# 添加随机噪声并处理
+Flow('ncmp','cmp','noise seed=2015 var=0')
+Flow('nrand','ncmp off','headersort head=${SOURCES[1]}')
+Grey('nrand','')
+
+# 预测反褶积处理（注释掉的备选方案）
+#Flow('pef lag','nrand','lopef a=3,7 w=10,50 lag=${TARGETS[1]}') 
+#Flow('tx','nrand pef','decon filt=${SOURCES[1]} predictive=y')
+
+# 实际使用的处理流程：转置 -> 中值滤波 -> 转置
+Flow('tx','nrand','transp | mf nfw=5 | transp')
+
+# 反演流程
+Flow('inv','off','math output=x1 | spray axis=1 n=1 | headersort head=$SOURCE')
+Flow('back','tx inv','headersort head=${SOURCES[1]}')
+
+# 差异计算：原始数据与处理后数据对比
+Flow('dif','ncmp back','add scale=1,-1 ${SOURCES[1]}')
+
+# 结果绘图设置
+Plot('back','grey title="CMP (3-D)" clip=0.62')
+Plot('dif','grey title="Difference (3-D)" clip=0.62')
+
+# 获取辅助数据
+# Fetch('mo_supp.HH','haskell')
+# Flow('hm','mo_supp.HH','dd form=native ')
+
+# # 生成不同数据的波形对比图
+# for case in ('mo','back','hm'):
+#     Plot(case+'-trace',case,
+#          '''
+#          bandpass fhi=50 | 
+#          window min1=2 max1=3 n2=3 | 
+#          wiggle poly=y clip=0.4 labelsz=12 labelfat=1 titlesz=12 titlefat=1 title="%s" label2= unit2=
+#          ''' % {'mo':'Input','back':'PEF (3-D)','hm': 'Velocity Stack'}[case])
+
+# # 生成最终对比结果图
+# Result('mo-near-offset-tx','mo-trace back-trace hm-trace','SideBySideAniso')
+
+########################################################################
+# EMD处理部分
+########################################################################
+n1=1000   # 时间采样点数
+n2=46     # 道数
+dt=0.004  # 采样间隔（秒）
+lf=5      # 低截频率（Hz）
+hf=120    # 高截频率（Hz）
+N=3       # EMD分解阶数
+verb=0    # 详细模式开关
+
+# 数据格式转换：RSF -> SEGY
+Flow('offset', 'nrand', 'window n1=1 | math output="1000*x1" | dd type=int')
+Flow('tdata','nrand offset','segyheader offset=${SOURCES[1]}')
+Flow('nrand.sgy','nrand tdata','segywrite tfile=${SOURCES[1]}')
+
+# SEGY -> RSF 转换（假设已进行EMD处理）
+Flow('nrand-emd-t','nrand_emd_t.sgy','segyread')
+
+# 数据重新标定
+Flow('nrand-emd','nrand-emd-t','put d2=0.02286 d1=0.008 o2=0 o1=0 label2=Offset unit2=km label1=Time unit1=s')
+Flow('nrand-emd-back','nrand-emd inv','headersort head=${SOURCES[1]}')
+
+# EMD处理差异计算
+Flow('emd-dif','ncmp nrand-emd-back','add scale=1,-1 ${SOURCES[1]}')
+
+# 反NMO处理（常规方法与EMD方法对比）
+Flow('demul-mf','back pick','inmo velocity=${SOURCES[1]} half=n')
+Flow('demul-emd','nrand-emd-back pick','inmo velocity=${SOURCES[1]} half=n')
+
+# 速度谱分析（常规方法与EMD方法）
+Flow('vscan-emd','demul-emd1','vscan semblance=y v0=1.2 dv=0.01 nv=180 half=n')
+Flow('vscan-mf','demul-mf','vscan semblance=y v0=1.2 dv=0.01 nv=180 half=n')
+
+# 可视化参数设置
+Grey('vscan','color=j allpos=y unit2="km/s"')
+Grey('vscan-emd','color=j allpos=y clip=0.6 unit2="km/s"')
+Grey('vscan-mf','color=j allpos=y clip=0.6 unit2="km/s"')
+
+# 结构导向滤波处理
+ns0=5
+Flow('dip','demul-emd','bandpass fhi=30 | dip rect1=%d rect2=%d'%(5,5))
+Grey('dip','color=j clip=4.7')
+
+Flow('spray',['demul-emd','dip'],'pwspray dip=${SOURCES[1]} ns=%d'%(ns0))
+Flow('demul-emd1','spray','transp plane=12 | mf nfw=%d | transp plane=12 | window n2=1 f2=%d '%(ns0,ns0))
+Grey('demul-emd1','')
+
+# 最终差异显示
+Flow('emd-dif1','demul-emd demul-emd1','add scale=1,-1 ${SOURCES[1]}')
+Grey('emd-dif1','')
+
+Flow('dif-mf','cmp0 demul-mf','add scale=1,-1 ${SOURCES[1]}')
+Grey('dif-mf','')
+
+Flow('dif-emd','cmp0 demul-emd1','add scale=1,-1 ${SOURCES[1]}')
+Grey('dif-emd','')
+
+Flow('diff', 'cmp0 dif-emd', 'add scale=1,-1 ${SOURCES[1]}')
+Grey('diff', '')
+
+End() # 结束流程定义
