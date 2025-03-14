@@ -3,17 +3,18 @@
 This repository is used by me to store the code related to multiple wave suppression and adaptive subtraction for my undergraduate thesis. The information is sourced from the internet. If you have any questions, please feel free to contact me
 
 ## Installation
-(If you install a new version, there may be some parameter errors)
-```python
-pip install pylops
-```
-```
-install Madagascar(Because my Matlab in Windows, and work in Linux, there is some bug,
-so I don't configure API=matlab in Madagascar, and I
-convert rsf to segy, and read segy data in Matlab, processing ..., save segy data in Matalb,
-finally, convert segy data to rsf )
 
-https://ahay.org/wiki/Installation
+```
+# If you install a new version, there may be some parameter errors
+pip install pylops 
+```
+
+```
+# install Madagascar(Because my Matlab in Windows, and work in Linux, there is some bug,
+# so I don't configure API=matlab in Madagascar, and I
+# convert rsf to segy, and read segy data in Matlab, processing ..., save segy data in Matalb,
+# finally, convert segy data to rsf )
+# https://ahay.org/wiki/Installation
 ```
 
 
