@@ -8,7 +8,8 @@ This repository is used by me to store the code related to multiple wave suppres
 pip install pylops
 ```
 ```
-install Madagascar
+install Madagascar(Because my Matlab in Windows, and work in Linux, there is some bug, so I don't configure API=matlab in Madagascar, and I
+convert rsf to segy, and read segy data in Matlab, processing ..., save segy data in Matalb, finally, convert segy data to rsf )
 https://ahay.org/wiki/Installation
 ```
 
