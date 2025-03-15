@@ -175,7 +175,9 @@ EPSI_SLIM_main('input_file','../data/your_data.mat','maxTotalIter',100,'padtime'
 ![seislet](https://github.com/Lipeng-Lai/Mutiples_Suppression/blob/main/images/seislet.png)
 
 ## Curvelet
+[Curvelet-based primary-multiple separation from a Bayesian perspective](https://library.seg.org/doi/abs/10.1190/1.2792988) [code](https://github.com/DIG-Kaust/Adaptive-subtraction/tree/master/notebooks/Primary_Multiple_Curvelet_Separation)
 
+![curvelet](https://github.com/Lipeng-Lai/Mutiples_Suppression/blob/main/images/curvelet.png)
 
 ## DeepLearning
 
